@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .forms import GalleryForm
-from .models import Course, Gallery, Certificate
+from .models import Course, Gallery, Certificate, Event, Outcome
 from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 
 
@@ -40,3 +40,23 @@ class CertificateAdmin(SortableAdminMixin, admin.ModelAdmin):
 class GalleryAdmin(admin.ModelAdmin):
     list_display = ('id', 'course', 'order')
     fields = ['course', 'img', 'order']
+
+
+class OutcomeInline(SortableInlineAdminMixin, admin.TabularInline):
+    model = Outcome
+    extra = 0
+    fields = ['text', 'order']
+    sortable_field_name = "order"
+
+
+@admin.register(Event)
+class EventAdmin(SortableAdminMixin, admin.ModelAdmin):
+    inlines = [OutcomeInline]
+    list_display = ['day', 'title', 'month', 'hour', 'place', 'status', 'order']
+    fields = ['day', 'month', 'title', 'hour',  'event_description', 'place', 'description', 'image', 'status']
+    search_fields = ['title', 'event_description']
+    list_filter = ['status']  # Фильтрация по статусу
+    ordering = ['order']  # Сортировка по дате
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)

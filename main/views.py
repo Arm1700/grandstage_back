@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from . import serializers
 
 from rest_framework import generics
-from .models import Course, Certificate
-from .serializers import CourseSerializer, CertificateSerializer
+from .models import Course, Certificate, Event
+from .serializers import CourseSerializer, CertificateSerializer, EventSerializer
 
 
 class CertificateDetailView(generics.RetrieveAPIView):
@@ -28,6 +28,16 @@ class CourseListView(generics.ListAPIView):
 class CourseDetailView(generics.RetrieveAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+
+
+class EventListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+
+class EventDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
 
 
 def reset_database(request):
