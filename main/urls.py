@@ -11,7 +11,7 @@ urlpatterns = [
     path('certificate/<int:pk>/', views.CertificateDetailView.as_view(), name='Certificate-detail'),
     path('courses/', views.CourseListView.as_view(), name='courses-list'),
     path('courses/<int:pk>/', views.CourseDetailView.as_view(), name='courses-detail'),
-    path('events/', views.EventListCreateAPIView.as_view(), name='event-list-create'),
+    path('events/', views.EventListView.as_view(), name='event-list-create'),
     path('events/<int:pk>/', views.EventDetailAPIView.as_view(), name='event-detail'),
     path('reset-database/',
          views.reset_database, name='reset_database'),

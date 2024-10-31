@@ -30,7 +30,7 @@ class CourseDetailView(generics.RetrieveAPIView):
     serializer_class = CourseSerializer
 
 
-class EventListCreateAPIView(generics.ListCreateAPIView):
+class EventListView(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
