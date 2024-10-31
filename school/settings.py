@@ -182,6 +182,7 @@ LANGUAGES = [
     ('am', 'Armenian'),
     ('ru', 'Russian')
 ]
+
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'main/locale'),
 ]
