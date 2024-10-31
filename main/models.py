@@ -1,6 +1,6 @@
 from django.db import models
 from adminsortable.models import SortableMixin
-from tasks import optimize_image
+from .tasks import optimize_image
 
 
 class Course(models.Model):
