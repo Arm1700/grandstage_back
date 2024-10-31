@@ -1,6 +1,5 @@
 from django.db import models
 from adminsortable.models import SortableMixin
-from .tasks import optimize_image
 
 
 class Course(models.Model):
@@ -32,14 +31,6 @@ class Gallery(models.Model):
 
     def __str__(self):
         return f"Gallery {self.id} - {self.course.name}" if self.course else "Gallery"
-
-    def save(self, *args, **kwargs):
-        # Сначала сохраняем объект, чтобы получить ID
-        super().save(*args, **kwargs)
-
-        # Отправляем задачу на оптимизацию изображения в Celery
-        if self.img:
-            optimize_image.delay(self.id)
 
 
 class Certificate(models.Model):
