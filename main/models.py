@@ -32,7 +32,7 @@ class Event(models.Model):
 
 
 class EventGallery(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,related_name='event_galleries', on_delete=models.CASCADE)
     img = models.ImageField(upload_to='event-gallery_photos/', blank=True, null=True)
     order = models.PositiveIntegerField(default=0, blank=True, null=True)
 
