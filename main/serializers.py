@@ -1,11 +1,19 @@
 from rest_framework import serializers
-from .models import Course, Gallery, Event, Outcome
+from .models import Course, Gallery, Event, Outcome, EventGallery
 
 
 class CertificateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gallery
         fields = ['id', 'img', 'order']
+
+
+class EventGallerySerializer(serializers.ModelSerializer):
+    event_gallery_name = serializers.CharField(source='event.name', read_only=True)
+
+    class Meta:
+        model = EventGallery
+        fields = ['id', 'event', 'event_gallery_name', 'img', 'order']
 
 
 class GallerySerializer(serializers.ModelSerializer):
@@ -24,10 +32,12 @@ class OutcomeSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     outcomes = OutcomeSerializer(many=True, required=False)
+    event_galleries = EventGallerySerializer(many=True, source='event_gallery_set')
 
     class Meta:
         model = Event
-        fields = '__all__'
+        fields = ['day', 'month', 'title', 'hour', 'place', 'event_description', 'description', 'image', 'status',
+                  'order', 'outcomes', 'event_galleries']
 
     def create(self, validated_data):
         outcomes_data = validated_data.pop('outcomes', [])

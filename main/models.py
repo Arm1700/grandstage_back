@@ -1,7 +1,5 @@
 from adminsortable.models import SortableMixin
-from django.core.exceptions import ValidationError
 from django.db import models
-import json
 
 
 class Event(models.Model):
@@ -12,7 +10,7 @@ class Event(models.Model):
     place = models.CharField(max_length=100)
     event_description = models.TextField()
     description = models.TextField()
-    image = models.URLField(max_length=200)
+    image = models.ImageField(upload_to='event-gallery_photos/', blank=True, null=True)
     order = models.PositiveIntegerField(default=0, blank=True, null=True)
     status = models.CharField(max_length=20, choices=[
         ('happening', 'Happening'),
@@ -25,6 +23,24 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)  # Ensure the base save is called
+        images = form.cleaned_data.get('img', [])
+        for image in images:
+            EventGallery.objects.create(course=obj, img=image)
+
+
+class EventGallery(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    img = models.ImageField(upload_to='event-gallery_photos/', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0, blank=True, null=True)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Event gallery {self.id} - {self.event.title}" if self.event else "Event Gallery"
 
 
 class Outcome(models.Model):

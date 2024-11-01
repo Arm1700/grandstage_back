@@ -1,6 +1,5 @@
 from django import forms
-
-from main.models import Course
+from main.models import Course, Event
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -27,6 +26,18 @@ class GalleryForm(forms.ModelForm):
     class Meta:
         model = Course  # Targeting the Course model for the form
         fields = ['name', 'image', 'order', 'desc']  # Fields for Course
+        widgets = {
+            'images': MultipleFileInput(),
+        }
+
+
+class EventGalleryForm(forms.ModelForm):
+    images = MultipleFileField(label='Select files for Event Gallery', required=False)
+
+    class Meta:
+        model = Event  # Targeting the Course model for the form
+        fields = ['day', 'month', 'title', 'hour', 'place', 'event_description', 'description', 'image', 'status',
+                  'order']  # Fields for Course
         widgets = {
             'images': MultipleFileInput(),
         }
