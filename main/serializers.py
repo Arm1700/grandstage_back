@@ -32,7 +32,7 @@ class OutcomeSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     outcomes = OutcomeSerializer(many=True, required=False)
-    event_galleries = EventGallerySerializer(many=True, source='event_galleries', required=False)
+    event_galleries = EventGallerySerializer(many=True,  required=False)
 
     class Meta:
         model = Event
